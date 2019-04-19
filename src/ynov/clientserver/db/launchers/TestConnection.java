@@ -25,7 +25,7 @@ public class TestConnection {
 				Date annee = rs.getDate("anneeNaissance");
 				int sexe = rs.getInt("sexe");
 				
-				System.out.print(prenom + " - " + nom + " : " + annee);
+				System.out.print(prenom + " - " + nom + " : " + annee + "\n");
 			}
 		}
 		catch(Exception exc)
