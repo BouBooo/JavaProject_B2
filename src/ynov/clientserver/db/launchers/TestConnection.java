@@ -11,7 +11,7 @@ public class TestConnection {
 	public static void main(String[] args) {
 		try
 		{
-			MySqlConnecteur mc=new MySqlConnecteur("anniversaires");
+			MySqlConnecteur mc = new MySqlConnecteur("anniversaires");
 			
 			// SQL Request
 			String sql = "SELECT * FROM anniv";

@@ -13,7 +13,7 @@ public class MySqlConnecteur {
 	{
 		try
 		{
-			String url = "jdbc:mysql://"+IP+"/"+base; 	//Database path		  
+			String url = "jdbc:mysql://"+IP+"/"+base+"?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow"; 	//Database path		  
 			con=DriverManager.getConnection(url, login, pass);
 		}
 		catch(Exception exc)
