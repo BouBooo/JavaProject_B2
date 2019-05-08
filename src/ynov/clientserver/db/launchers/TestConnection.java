@@ -18,7 +18,7 @@ public class TestConnection {
 
 		String commande=demande.getString("commande");
 		
-		// All table datas
+		// All people infos 
 		if(commande.equals("*")) {
 			String sql="SELECT * FROM anniv";
 			try {
@@ -40,10 +40,10 @@ public class TestConnection {
 				System.out.println(e.getMessage());
 			}
 		}
-		// All the people born <= annee
+		// All the people born before (or in) a given year
 		else if(commande.equals("<=")) {
 			int annee=demande.getInt("valeur");
-			String sql="SELECT * FROM anniv WHERE anneeNaissance<="+annee;
+			String sql="SELECT * FROM anniv WHERE anneeNaissance <= "+annee;
 			try {
 				ResultSet rs=conn.select(sql);
 				while(rs.next()) {
@@ -61,10 +61,79 @@ public class TestConnection {
 				System.out.println(e.getMessage());
 			}
 		}
+
+
+		// People born in given year
+		else if(commande.equals("==")) {
+			int annee=demande.getInt("valeur");
+			String sql="SELECT * FROM anniv WHERE anneeNaissance = "+annee;
+			try {
+				ResultSet rs=conn.select(sql);
+				while(rs.next()) {
+					JSONObject record=new JSONObject();
+	
+					String prenom = rs.getString("prenom");
+					String nom = rs.getString("nom");
+					int anneeNaissance = rs.getInt("anneeNaissance");
+					record.put("Prénom", prenom);
+					record.put("Nom", nom);
+					record.put("Année", anneeNaissance);
+					res.put(record);
+				}
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+
+		// People who aren't born in a given year
+		else if(commande.equals("!=")) {
+			int annee=demande.getInt("valeur");
+			String sql="SELECT * FROM anniv WHERE anneeNaissance != "+annee;
+			try {
+				ResultSet rs=conn.select(sql);
+				while(rs.next()) {
+					JSONObject record=new JSONObject();
+	
+					String prenom = rs.getString("prenom");
+					String nom = rs.getString("nom");
+					int anneeNaissance = rs.getInt("anneeNaissance");
+					record.put("Prénom", prenom);
+					record.put("Nom", nom);
+					record.put("Année", anneeNaissance);
+					res.put(record);
+				}
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		// People born after a given year
+		else if(commande.equals(">")) {
+			int annee=demande.getInt("valeur");
+			String sql="SELECT * FROM anniv WHERE anneeNaissance > "+annee;
+			try {
+				ResultSet rs=conn.select(sql);
+				while(rs.next()) {
+					JSONObject record=new JSONObject();
+	
+					String prenom = rs.getString("prenom");
+					String nom = rs.getString("nom");
+					int anneeNaissance = rs.getInt("anneeNaissance");
+					record.put("Prénom", prenom);
+					record.put("Nom", nom);
+					record.put("Année", anneeNaissance);
+					res.put(record);
+				}
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
 		return res;
 	}
 
 	public static void main(String[] args) {
+		// *
 		System.out.println("Tous les enregistrements :");
 		JSONObject j1 = new JSONObject();
 		j1.put("commande", "*");
@@ -72,13 +141,40 @@ public class TestConnection {
 		System.out.println('\n');
 
 
+		// <=
 		System.out.println("Toutes les personnes nées avant 1998 :");
 		JSONObject j2 = new JSONObject();	
-
 		j2.put("commande", "<=");
 		j2.put("valeur", 1998);
 		System.out.println(TestConnection.recupere(j2));
 		System.out.println('\n');
+		
+		// ==
+		System.out.println("Toutes les personnes nées en 1999 :");
+		JSONObject j3 = new JSONObject();	
+		j3.put("commande", "==");
+		j3.put("valeur", 1999);
+		System.out.println(TestConnection.recupere(j3));
+		System.out.println('\n');
+		
+		// !=
+		System.out.println("Toutes les personnes non nées en 1999 :");
+		JSONObject j4 = new JSONObject();	
+		j4.put("commande", "!=");
+		j4.put("valeur", 1999);
+		System.out.println(TestConnection.recupere(j4));
+		System.out.println('\n');
+		
+		// >
+		System.out.println("Toutes les personnes nées après 1996 :");
+		JSONObject j5 = new JSONObject();	
+		j5.put("commande", "!=");
+		j5.put("valeur", 1996);
+		System.out.println(TestConnection.recupere(j5));
+		System.out.println('\n');
+
+
+
 	}
 
 }
