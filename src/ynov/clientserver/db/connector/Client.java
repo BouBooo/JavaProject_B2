@@ -8,41 +8,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.json.JSONObject;
+
 public class Client {
 	public static void main(String args[]) {
 		try {
-			Socket skt = new Socket("localhost", 1259);
+			Socket skt = new Socket("localhost", 1260);
 			// on initialise les flux de lecture et d'écriture
 			PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
 			Scanner clavier=new Scanner(System.in);
-		
-				System.out.print("Choisissez l'action à effectuer : ");
-				int nb=clavier.nextInt();
-				// on envoie ce nombre au serveur
-				out.println(nb);
-				
-				switch (nb) {
-				  case 0:
-				    System.out.println("Action 1");
-				    break;
-				  case 1:
-				    System.out.println("Action 2");
-				    break;
-				  case 2:
-				    System.out.println("Action 3");
-				    break;
-				  case 3:
-				    System.out.println("Action 4");
-				    break;
-				  case 4:
-				    System.out.println("Action 50");
-				    break;
-				}
 			
+
+			System.out.print("Choisissez l'action à effectuer : ");
+			String input = clavier.next();
+			JSONObject requete=new JSONObject();
+			requete.put("commande", input);
+			System.out.println(requete);
+			
+			if(!input.equals("*")) {
+				System.out.print("Choisissez l'année : ");
+				int annee=clavier.nextInt();
+				requete.put("valeur", annee);
+			}
+			
+			out.println(requete);
+				
 			System.out.println("Fin du client. A plus dans l'bus !");
 			in.close();
 		}
+			
 		catch(Exception e)
 		{
 			System.err.println("Problème client : "+e.getMessage());

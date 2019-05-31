@@ -132,49 +132,4 @@ public class TestConnection {
 		return res;
 	}
 
-	public static void main(String[] args) {
-		// *
-		System.out.println("Tous les enregistrements :");
-		JSONObject j1 = new JSONObject();
-		j1.put("commande", "*");
-		System.out.println(TestConnection.recupere(j1));
-		System.out.println('\n');
-
-
-		// <=
-		System.out.println("Toutes les personnes nées avant 1998 :");
-		JSONObject j2 = new JSONObject();	
-		j2.put("commande", "<=");
-		j2.put("valeur", 1998);
-		System.out.println(TestConnection.recupere(j2));
-		System.out.println('\n');
-		
-		// ==
-		System.out.println("Toutes les personnes nées en 1999 :");
-		JSONObject j3 = new JSONObject();	
-		j3.put("commande", "==");
-		j3.put("valeur", 1999);
-		System.out.println(TestConnection.recupere(j3));
-		System.out.println('\n');
-		
-		// !=
-		System.out.println("Toutes les personnes non nées en 1999 :");
-		JSONObject j4 = new JSONObject();	
-		j4.put("commande", "!=");
-		j4.put("valeur", 1999);
-		System.out.println(TestConnection.recupere(j4));
-		System.out.println('\n');
-		
-		// >
-		System.out.println("Toutes les personnes nées après 1996 :");
-		JSONObject j5 = new JSONObject();	
-		j5.put("commande", "!=");
-		j5.put("valeur", 1996);
-		System.out.println(TestConnection.recupere(j5));
-		System.out.println('\n');
-
-
-
-	}
-
 }

@@ -9,52 +9,148 @@ import java.net.Socket;
 import java.sql.Date;
 import java.sql.ResultSet;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class Serveur {
 	public static void main(String args[])
 	{
-	String[] chaines={"Toutes les personnes de la base de données", "task2", "task3"};
-	try {
-	ServerSocket srvr = new ServerSocket(1259);
-	System.out.println("Serveur à l'écoute...");
-	Socket skt = srvr.accept();
-	System.out.println("Un client est connecté !");
-	// on initialise les flux de lecture et d'écriture
-	PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
-	BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
-	
-	while(true){
-		int nb = Integer.parseInt(in.readLine());
-		System.out.println("Serveur : réception "+nb);
-		if(nb<0 || nb>=chaines.length){
-			System.out.println("Nombre invalide");
-			out.println("Tchao");
-			break;
-		}
-		else if(nb == 0) {
+		try {
+			JSONArray res = new JSONArray();
+			ServerSocket srvr = new ServerSocket(1260);
+			System.out.println("Serveur à l'écoute...");
+			Socket skt = srvr.accept();
+			System.out.println("Un client est connecté !");
+			// on initialise les flux de lecture et d'écriture
+			PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
+			BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
+
+
+			String input = in.readLine();
+			System.out.println("Serveur : réception "+input);
+
+			JSONObject jsonObj = new JSONObject(input);
+			String commande=jsonObj.getString("commande");
+			
 			MySqlConnecteur mc=new MySqlConnecteur("anniversaires");
-			
-			// SQL Request
-			String sql = "SELECT prnom, nom FROM anniv";
-			ResultSet rs = mc.select(sql);
-			
-			// View
-			while(rs.next())
-			{
-				String prenom = rs.getString("prenom");
-				String nom = rs.getString("nom");
-				System.out.print(prenom + "\n");
+
+
+			if(commande.equals("*")) {
+				try {
+					// SQL Request
+					String sql = "SELECT prenom, nom, anneeNaissance FROM anniv";
+					ResultSet rs = mc.select(sql);
+
+					while(rs.next())
+					{
+						JSONObject record=new JSONObject();
+						String prenom = rs.getString("prenom");
+						String nom = rs.getString("nom");
+						int annee = rs.getInt("anneeNaissance");
+						record.put("Prénom", prenom);
+						record.put("Nom", nom);
+						record.put("Année", annee);
+						res.put(record);
+					}
+					System.out.println(res);
+				}
+				catch(Exception e) {
+					System.out.println(e);
+				}
+				
 			}
+			else {
+				int valeur = jsonObj.getInt("valeur");
+				if(commande.equals("=")) {
+					String sql= "SELECT prenom, nom, anneeNaissance FROM anniv WHERE anneeNaissance = "+valeur; ;
+					ResultSet rs = mc.select(sql);
+				
+					while(rs.next())
+					{
+						JSONObject record=new JSONObject();
+						String prenom = rs.getString("prenom");
+						String nom = rs.getString("nom");
+						Date annee = rs.getDate("anneeNaissance");
+						record.put("Prénom", prenom);
+						record.put("Nom", nom);
+						record.put("Année", annee);
+						res.put(record);
+					}
+					System.out.println(res);
+
+				}
+				else if(commande.equals("!=")) {
+					String sql= "SELECT prenom, nom, anneeNaissance FROM anniv WHERE anneeNaissance != "+valeur; ;
+					ResultSet rs = mc.select(sql);
+					
+					while(rs.next())
+					{
+						JSONObject record=new JSONObject();
+						String prenom = rs.getString("prenom");
+						String nom = rs.getString("nom");
+						Date annee = rs.getDate("anneeNaissance");
+						record.put("Prénom", prenom);
+						record.put("Nom", nom);
+						record.put("Année", annee);
+						res.put(record);
+					}
+					System.out.println(res);
+
+				}
+				else if(commande.equals(">")) {
+					String sql= "SELECT prenom, nom, anneeNaissance FROM anniv WHERE anneeNaissance > "+valeur; ;
+					ResultSet rs = mc.select(sql);
+					
+					while(rs.next())
+					{
+						JSONObject record=new JSONObject();
+						String prenom = rs.getString("prenom");
+						String nom = rs.getString("nom");
+						int annee = rs.getInt("anneeNaissance");
+						record.put("Prénom", prenom);
+						record.put("Nom", nom);
+						record.put("Année", annee);
+						res.put(record);
+					}
+					System.out.println(res);
+
+				}
+				else if(commande.equals("<=")) {
+					String sql= "SELECT prenom, nom, anneeNaissance FROM anniv WHERE anneeNaissance <= "+valeur; ;
+					ResultSet rs = mc.select(sql);
+					
+
+					while(rs.next())
+					{
+						JSONObject record=new JSONObject();
+						String prenom = rs.getString("prenom");
+						String nom = rs.getString("nom");
+						int annee = rs.getInt("anneeNaissance");
+						record.put("Prénom", prenom);
+						record.put("Nom", nom);
+						record.put("Année", annee);
+						res.put(record);
+					}
+					System.out.println(res);
+
+				}
+				else {
+					System.out.println("Requête invalide");
+					out.close();
+					skt.close();
+					srvr.close();
+				}
+			}
+
+			System.out.println("Le serveur s'arrête...");
+			out.close();
+			skt.close();
+			srvr.close();
 		}
-	}
-	System.out.println("Le serveur s'arrête...");
-	out.close();
-	skt.close();
-	srvr.close();
-	}
-	catch(Exception e) {
-	System.out.println("Problème : "+e.getMessage());
-	}
+		catch(Exception e) {
+			System.out.println("Problème : "+e.getMessage());
+		}
 	}
 
 }
