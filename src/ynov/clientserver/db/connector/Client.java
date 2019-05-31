@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Client {
@@ -32,6 +33,8 @@ public class Client {
 			}
 			
 			out.println(requete);
+			String jsonrecep = in.readLine();
+			System.out.println(jsonrecep);
 				
 			System.out.println("Fin du client. A plus dans l'bus !");
 			in.close();

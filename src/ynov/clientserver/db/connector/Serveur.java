@@ -53,6 +53,7 @@ public class Serveur {
 						res.put(record);
 					}
 					System.out.println(res);
+					out.println(res);
 				}
 				catch(Exception e) {
 					System.out.println(e);
@@ -76,6 +77,7 @@ public class Serveur {
 						record.put("Année", annee);
 						res.put(record);
 					}
+					out.println(res);
 					System.out.println(res);
 
 				}
@@ -94,6 +96,7 @@ public class Serveur {
 						record.put("Année", annee);
 						res.put(record);
 					}
+					out.println(res);
 					System.out.println(res);
 
 				}
@@ -112,6 +115,7 @@ public class Serveur {
 						record.put("Année", annee);
 						res.put(record);
 					}
+					out.println(res);
 					System.out.println(res);
 
 				}
@@ -131,6 +135,7 @@ public class Serveur {
 						record.put("Année", annee);
 						res.put(record);
 					}
+					out.println(res);
 					System.out.println(res);
 
 				}
