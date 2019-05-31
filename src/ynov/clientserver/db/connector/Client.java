@@ -14,7 +14,6 @@ public class Client {
 	public static void main(String args[]) {
 		try {
 			Socket skt = new Socket("localhost", 1260);
-			// on initialise les flux de lecture et d'écriture
 			PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
 			Scanner clavier=new Scanner(System.in);

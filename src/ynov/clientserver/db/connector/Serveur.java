@@ -22,7 +22,6 @@ public class Serveur {
 			System.out.println("Serveur à l'écoute...");
 			Socket skt = srvr.accept();
 			System.out.println("Un client est connecté !");
-			// on initialise les flux de lecture et d'écriture
 			PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
 
@@ -152,6 +151,5 @@ public class Serveur {
 			System.out.println("Problème : "+e.getMessage());
 		}
 	}
-
 }
 
