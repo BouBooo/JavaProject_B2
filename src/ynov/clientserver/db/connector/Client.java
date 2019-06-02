@@ -30,6 +30,7 @@ public class Client {
 				System.out.print("Choisissez l'année : ");
 				int annee=clavier.nextInt();
 				requete.put("valeur", annee);
+				System.out.println(requete);
 			}
 			
 			out.println(requete);
